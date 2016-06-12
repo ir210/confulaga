@@ -11,7 +11,7 @@ def star(rule: Rule) -> Rule:
 
         # noinspection PyShadowingBuiltins
         def parse(self, input: Input) -> Output:
-            result = Value(self.name, None)
+            result = None
             next_input = input
 
             while not next_input.eof():
@@ -30,7 +30,10 @@ def star(rule: Rule) -> Rule:
                 else:
                     return output
 
-            return Output(OutputType.ok, next_input, result)
+            if not result:
+                return Output(OutputType.ok, next_input, Value(self.name, None))
+            else:
+                return Output(OutputType.ok, next_input, result)
 
     return _Rule()
 
