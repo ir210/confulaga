@@ -8,13 +8,14 @@ the python script itself.
 Below is an example of how to use Confulaga to create a parser to parse JSON syntax.
 
 ``` python
+from ast import literal_eval
 from confulaga import *
 
 
 WHITESPACE = ignore(r'^[ \t\r\n]+')
 
-STRING = term('\"[^\"]*\"', 'string', lambda x: x[1:-1])
-NUMBER = term('[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?', 'number')
+STRING = term('\"[^\"]*\"', name='string', transformer=lambda x: x[1:-1])
+NUMBER = term('[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?', name='number')
 
 OPEN_BRACE = term(r'\{', name='{')
 CLOSE_BRACE = term(r'\}', name='}')
@@ -41,12 +42,7 @@ def json_true(value):
 
 @rule(NUMBER)
 def json_number(value):
-    number_str = value[0]
-
-    if '.' in number_str or 'e' in number_str or 'E' in number_str:
-        return float(number_str)
-    else:
-        return int(number_str)
+    return literal_eval(value[0])
 
 
 @rule(STRING | json_false | json_true | json_number | f('json_array') | f('json_object'))

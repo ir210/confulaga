@@ -3,7 +3,7 @@ from .inputs import Input
 from .outputs import Line, Output, OutputType
 from .rules import Rule
 from .ops import star, opt
-from .tools import rule, term, ignore, forwarder
+from .tools import rule, term, ignore, forwarder, forward
 from .values import Value
 
 __all__ = [
@@ -20,4 +20,5 @@ __all__ = [
     term,
     ignore,
     forwarder,
+    forward,
 ]
